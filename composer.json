@@ -1,0 +1,16 @@
+{
+    "name": "codegyre/robo-docker",
+    "description": "Docker Tasks for Robo Task Runner",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Davert",
+            "email": "davert.php@resend.cc"
+        }
+    ],
+    "autoload":{
+        "psr-4":{
+            "Codegyre\\Task\\":"src"
+        }
+    }
+}
