@@ -15,6 +15,11 @@ trait Docker
     {
         return new DockerPullTask($image);
     }
+
+    protected function taskDockerBuild($path = '.')
+    {
+        return new DockerBuildTask($path);
+    }
 }
 
 class DockerRunTask extends ExecTask
@@ -89,5 +94,14 @@ class DockerPullTask extends ExecTask
     function __construct($image)
     {
         $this->command = "docker pull $image ";
+    }
+}
+
+class DockerBuildTask extends ExecTask
+{
+    public function __construct($path = '.')
+    {
+        $this->command = "docker build $path";
+
     }
 }
