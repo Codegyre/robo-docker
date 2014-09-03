@@ -6,9 +6,14 @@ use \Robo\Task\Shared\CommandInjected;
 
 trait Docker
 {
-    public function taskDockerRun($image)
+    protected function taskDockerRun($image)
     {
         return new DockerRunTask($image);
+    }
+
+    protected function taskDockerPull($image)
+    {
+        return new DockerPullTask($image);
     }
 }
 
@@ -72,5 +77,17 @@ class DockerRunTask extends ExecTask
     {
         return $this->option('-u', $user);
     }
-    
+
+    public function name($name)
+    {
+        return $this->option('name', $name);
+    }
+}
+
+class DockerPullTask extends ExecTask
+{
+    function __construct($image)
+    {
+        $this->command = "docker pull $image ";
+    }
 }
