@@ -102,6 +102,10 @@ class DockerBuildTask extends ExecTask
     public function __construct($path = '.')
     {
         $this->command = "docker build $path";
+    }
 
+    public function tag($tag)
+    {
+        return $this->option('-t', $tag);
     }
 }
