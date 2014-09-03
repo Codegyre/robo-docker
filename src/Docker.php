@@ -36,7 +36,7 @@ class DockerRunTask extends ExecTask
 
     public function getCommand()
     {
-        return trim('docker run ' . $this->arguments .' ' . $this->image . ' "' . $this->run.'"');
+        return trim('docker run ' . $this->arguments .' ' . $this->image . ' ' . $this->run);
     }
 
     public function interactive()
