@@ -99,9 +99,16 @@ class DockerPullTask extends ExecTask
 
 class DockerBuildTask extends ExecTask
 {
+    protected $path;
+    
     public function __construct($path = '.')
     {
-        $this->command = "docker build $path";
+        $this->command = "docker build";
+    }
+
+    public function getCommand()
+    {
+        return $this->command .' ' .$this->arguments .' ' .$this->path;
     }
 
     public function tag($tag)
