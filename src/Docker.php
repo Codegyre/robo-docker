@@ -33,7 +33,7 @@ class DockerRunTask extends ExecTask
 
     function __construct($image)
     {
-        $this->cidFile = tempnam();
+        $this->cidFile = tempnam(sys_get_temp_dir(), 'docker-cid-');
         $this->image = $image;
     }
 
