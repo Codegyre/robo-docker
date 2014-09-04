@@ -4,7 +4,6 @@ namespace Codegyre\Task;
 use Robo\Result;
 use \Robo\Task\ExecTask;
 use \Robo\Task\Shared\CommandInjected;
-use Robo\Task\Shared\TaskException;
 
 trait Docker
 {
@@ -34,14 +33,14 @@ class DockerRunTask extends ExecTask
 
     function __construct($image)
     {
-        $this->cidFile = tmpfile();
+        $this->cidFile = tempnam();
         $this->image = $image;
     }
 
     public function getCommand()
     {
         if ($this->isPrinted) $this->option('-i');
-        $this->option('cidfile', $this->cidFile);
+        if ($this->cidFile) $this->option('cidfile', $this->cidFile);
         return trim('docker run ' . $this->arguments .' ' . $this->image . ' ' . $this->run);
     }
 
