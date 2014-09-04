@@ -1,8 +1,10 @@
 <?php
 namespace Codegyre\Task;
 
+use Robo\Result;
 use \Robo\Task\ExecTask;
 use \Robo\Task\Shared\CommandInjected;
+use Robo\Task\Shared\TaskException;
 
 trait Docker
 {
@@ -28,22 +30,19 @@ class DockerRunTask extends ExecTask
 
     protected $image = '';
     protected $run = '';
+    protected $cidFile;
 
     function __construct($image)
     {
+        $this->cidFile = tmpfile();
         $this->image = $image;
     }
 
     public function getCommand()
     {
+        if ($this->isPrinted) $this->option('-i');
+        $this->option('cidfile', $this->cidFile);
         return trim('docker run ' . $this->arguments .' ' . $this->image . ' ' . $this->run);
-    }
-
-    public function interactive()
-    {
-        $this->option('-i');
-        $this->option('-t');
-        return $this;
     }
 
     public function exec($run)
@@ -83,9 +82,26 @@ class DockerRunTask extends ExecTask
         return $this->option('-u', $user);
     }
 
+    public function privileged()
+    {
+        return $this->option('--privileged');
+    }
+
     public function name($name)
     {
         return $this->option('name', $name);
+    }
+
+    public function run()
+    {
+        $result = parent::run();
+        return new Result($this, $result->getExitCode(), $result->getMessage(), ['cid' => $this->getCid()]);
+    }
+
+    protected function getCid()
+    {
+        if (!$this->cidFile) return null;
+        return trim(file_get_contents($this->cidFile));
     }
 }
 
@@ -105,6 +121,7 @@ class DockerBuildTask extends ExecTask
     {
         $this->command = "docker build";
         $this->path = $path;
+        
     }
 
     public function getCommand()
