@@ -94,7 +94,9 @@ class DockerRunTask extends ExecTask
     public function run()
     {
         $result = parent::run();
-        return new Result($this, $result->getExitCode(), $result->getMessage(), ['cid' => $this->getCid()]);
+        $cid = $this->getCid();
+        unlink($this->cidFile);
+        return new Result($this, $result->getExitCode(), $result->getMessage(), ['cid' => $cid]);
     }
 
     protected function getCid()
