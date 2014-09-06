@@ -33,7 +33,6 @@ class DockerRunTask extends ExecTask
 
     function __construct($image)
     {
-        $this->cidFile = tempnam(sys_get_temp_dir(), 'docker-cid-');
         $this->image = $image;
     }
 
@@ -93,9 +92,9 @@ class DockerRunTask extends ExecTask
 
     public function run()
     {
+        $this->cidFile = sys_get_temp_dir() . '/docker_'.uniqid().'.cid';
         $result = parent::run();
         $cid = $this->getCid();
-        unlink($this->cidFile);
         return new Result($this, $result->getExitCode(), $result->getMessage(), ['cid' => $cid]);
     }
 
