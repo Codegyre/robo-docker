@@ -20,6 +20,16 @@ trait DockerTasks
     {
         return new DockerBuildTask($path);
     }
+
+    protected function taskDockerStop($cidOrResult)
+    {
+        return new DockerStopTask($cidOrResult);
+    }
+
+    protected function taskDockerCommit($cidOrResult)
+    {
+        return new DockerCommitTask($cidOrResult);
+    }
 }
 
 class DockerRunTask extends ExecTask
