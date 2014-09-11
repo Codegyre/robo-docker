@@ -10,7 +10,7 @@
     ],
     "autoload":{
         "psr-4":{
-            "Codegyre\\Task\\":"src"
+            "Codegyre\\RoboDocker\\":"src"
         }
     }
 }

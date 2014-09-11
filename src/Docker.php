@@ -1,11 +1,10 @@
 <?php
-namespace Codegyre\Task;
+namespace Codegyre\RoboDocker;
 
-use Robo\Result;
 use \Robo\Task\ExecTask;
 use \Robo\Task\Shared\CommandInjected;
 
-trait Docker
+trait DockerTasks
 {
     protected function taskDockerRun($image)
     {
@@ -101,7 +100,9 @@ class DockerRunTask extends ExecTask
     protected function getCid()
     {
         if (!$this->cidFile) return null;
-        return trim(file_get_contents($this->cidFile));
+        $cid = trim(file_get_contents($this->cidFile));
+        @unlink($this->cidFile);
+        return $cid;
     }
 }
 
@@ -132,5 +133,44 @@ class DockerBuildTask extends ExecTask
     public function tag($tag)
     {
         return $this->option('-t', $tag);
+    }
+}
+
+class DockerCommitTask extends ExecTask
+{
+    protected $command = "docker commit";
+    protected $name;
+    protected $cid;
+
+    public function __construct($cidOrResult)
+    {
+        $this->cid = $cidOrResult instanceof Result ? $cidOrResult->getCid() : $cidOrResult;
+    }
+    
+    public function getCommand()
+    {
+        return $this->command .' ' . $this->name .' ' . $this->cid.' ' .$this->arguments;
+    }    
+    
+    public function name($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+}
+
+class DockerStopTask extends ExecTask
+{
+    protected $command = "docker stop";
+    protected $cid;
+
+    public function __construct($cidOrResult)
+    {
+        $this->cid = $cidOrResult instanceof Result ? $cidOrResult->getCid() : $cidOrResult;
+    }
+
+    public function getCommand()
+    {
+        return $this->command .' ' . $this->arguments . ' ' . $this->cid;
     }
 }
