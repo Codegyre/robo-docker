@@ -27,5 +27,17 @@ trait DockerTasks
     {
         return new Task\Commit($cidOrResult);
     }
+
+    protected function taskDockerStart($cidOrResult)
+    {
+        return new Task\Start($cidOrResult);
+    }
+
+    protected function taskDockerRemove($cidOrResult)
+    {
+        return new Task\Remove($cidOrResult);
+    }
+
+
 }
 
