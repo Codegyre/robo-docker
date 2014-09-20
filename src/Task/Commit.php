@@ -17,7 +17,7 @@ class Commit extends ExecTask
 
     public function getCommand()
     {
-        return $this->command . ' ' . $this->name . ' ' . $this->cid . ' ' . $this->arguments;
+        return $this->command . ' ' . $this->cid . ' ' . $this->name . ' ' . $this->arguments;
     }
 
     public function name($name)
