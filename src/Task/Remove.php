@@ -1,5 +1,6 @@
 <?php
 namespace Codegyre\RoboDocker\Task;
+use Robo\Task\ExecTask;
 
 class Remove extends ExecTask
 {
